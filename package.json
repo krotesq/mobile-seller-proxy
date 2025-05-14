@@ -1,0 +1,24 @@
+{
+  "name": "api.fuldamotors.de",
+  "version": "0.0.1",
+  "description": "Fuldamotors API for communication with the Mobile.de API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krotesq/api.fuldamotors.de.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/krotesq/api.fuldamotors.de/issues"
+  },
+  "homepage": "https://github.com/krotesq/api.fuldamotors.de#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}
