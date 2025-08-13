@@ -4,7 +4,9 @@
   "description": "Fuldamotors API for communication with the Mobile.de API",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +19,13 @@
   },
   "homepage": "https://github.com/krotesq/api.fuldamotors.de#readme",
   "dependencies": {
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "helmet": "^8.1.0"
-  }
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10"
+  },
+  "type": "module"
 }
