@@ -7,7 +7,6 @@ async function controllerGetAds(req, res) {
     "Accept": "application/vnd.de.mobile.api+json",
     "Authorization": "Basic " + Buffer.from(`${process.env.MOBILE_USERNAME}:${process.env.MOBILE_PASSWORD}`).toString("base64")
   };
-  console.log(headers)
   const sellerId = process.env.SELLER_ID;
   const url = `https://services.mobile.de/seller-api/sellers/${sellerId}/ads`;
   const response = await fetch(url, { headers })
@@ -26,7 +25,6 @@ async function controllerGetAd(req, res) {
     "Accept": "application/vnd.de.mobile.api+json",
     "Authorization": "Basic " + Buffer.from(`${process.env.MOBILE_USERNAME}:${process.env.MOBILE_PASSWORD}`).toString("base64")
   };
-  console.log(headers)
   const sellerId = process.env.SELLER_ID;
   const url = `https://services.mobile.de/seller-api/sellers/${sellerId}/ads/${req.params.id}`;
   const response = await fetch(url, { headers })
