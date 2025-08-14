@@ -1,0 +1,301 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Fulda Motors API",
+    "version": "1.0.0",
+    "description": "API-Dokumentation für Fulda Motors."
+  },
+  "servers": [
+    {
+      "url": "https://api.fuldamotors.de",
+      "description": "Produktivserver"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HealthResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Interner Serverfehler",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ads": {
+      "get": {
+        "summary": "Listet alle Anzeigen auf",
+        "responses": {
+          "200": {
+            "description": "Liste der Anzeigen",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdsResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Interner Serverfehler",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ads/{id}": {
+      "get": {
+        "summary": "Gibt eine bestimmte Anzeige anhand der ID zurück",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID der Anzeige",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Details der Anzeige",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Anzeige nicht gefunden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          },
+          "500": {
+            "description": "Interner Serverfehler",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Ad found" },
+          "data": { "$ref": "#/components/schemas/Ad" }
+        },
+        "required": ["message", "data"]
+      },
+      "AdsResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Ads found" },
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Ad" }
+          }
+        },
+        "required": ["message", "data"]
+      },
+      "Ad": {
+        "type": "object",
+        "properties": {
+          "mobileAdId": { "type": "string", "example": "424872893" },
+          "mobileSellerId": { "type": "string", "example": "39266619" },
+          "creationDate": { "type": "string", "format": "date-time", "example": "2025-05-10T16:11:55+02:00" },
+          "modificationDate": { "type": "string", "format": "date-time", "example": "2025-08-12T20:20:17+02:00" },
+          "vehicleClass": { "type": "string", "enum": ["Car", "Truck", "Motorcycle", "Other"] },
+          "category": { "type": "string", "example": "Limousine" },
+          "make": { "type": "string", "example": "AUDI" },
+          "model": { "type": "string", "example": "A3" },
+          "modelDescription": { "type": "string", "example": "A3 Sportback 2.0 Ambition °Alcantara °Navi" },
+          "condition": { "type": "string", "enum": ["NEW", "USED", "DEMONSTRATION", "PRE_REGISTRATION"] },
+          "firstRegistration": {
+            "type": "string",
+            "description": "Erstzulassung im Format YYYYMM",
+            "pattern": "^\\d{6}$",
+            "example": "200705"
+          },
+          "mileage": { "type": "integer", "example": 195800 },
+          "vin": { "type": "string", "example": "WAUZZZ8P67A096057" },
+          "cubicCapacity": { "type": "integer", "description": "Hubraum in cm³", "example": 1984 },
+          "power": { "type": "integer", "description": "Leistung in kW", "example": 110 },
+          "gearbox": {
+            "type": "string",
+            "enum": ["MANUAL_GEAR", "AUTOMATIC_GEAR", "SEMI_AUTOMATIC", "UNKNOWN"]
+          },
+          "fuel": {
+            "type": "string",
+            "enum": ["PETROL", "DIESEL", "ELECTRIC", "HYBRID", "LPG", "CNG", "OTHER"]
+          },
+          "plugTypes": { "type": "array", "items": { "type": "string" } },
+          "e10Enabled": { "type": "boolean" },
+          "performanceHandlingSystem": { "type": "boolean" },
+          "emissionSticker": {
+            "type": "string",
+            "enum": ["EMISSIONSSTICKER_GREEN", "EMISSIONSSTICKER_YELLOW", "EMISSIONSSTICKER_RED", "NONE"]
+          },
+          "emissionClass": {
+            "type": "string",
+            "enum": ["EURO1", "EURO2", "EURO3", "EURO4", "EURO5", "EURO6", "OTHER"]
+          },
+          "cylinder": { "type": "integer", "example": 4 },
+          "exteriorColor": { "type": "string", "example": "BLUE" },
+          "manufacturerColorName": { "type": "string", "example": "Mauritiusblau Perleffekt" },
+          "metallic": { "type": "boolean" },
+          "doors": { "type": "string", "enum": ["TWO_OR_THREE", "FOUR_OR_FIVE", "MORE"] },
+          "seats": { "type": "integer", "example": 5 },
+          "interiorColor": { "type": "string", "example": "GREY" },
+          "interiorType": {
+            "type": "string",
+            "enum": ["FABRIC", "LEATHER", "ALCANTARA", "PART_LEATHER", "OTHER"]
+          },
+          "damageUnrepaired": { "type": "boolean" },
+          "abs": { "type": "boolean" },
+          "airbag": {
+            "type": "string",
+            "enum": ["FRONT_AIRBAGS", "FRONT_AND_SIDE_AIRBAGS", "FRONT_AND_SIDE_AND_MORE_AIRBAGS"]
+          },
+          "alloyWheels": { "type": "boolean" },
+          "cdPlayer": { "type": "boolean" },
+          "centralLocking": { "type": "boolean" },
+          "climatisation": {
+            "type": "string",
+            "enum": ["MANUAL_CLIMATISATION", "AUTOMATIC_CLIMATISATION", "4_ZONE_CLIMATISATION", "NONE"]
+          },
+          "electricExteriorMirrors": { "type": "boolean" },
+          "electricHeatedSeats": { "type": "boolean" },
+          "electricWindows": { "type": "boolean" },
+          "esp": { "type": "boolean" },
+          "frontFogLights": { "type": "boolean" },
+          "handsFreePhoneSystem": { "type": "boolean" },
+          "immobilizer": { "type": "boolean" },
+          "isofix": { "type": "boolean" },
+          "multifunctionalWheel": { "type": "boolean" },
+          "navigationSystem": { "type": "boolean" },
+          "onBoardComputer": { "type": "boolean" },
+          "parkingAssistants": { "type": "array", "items": { "type": "string" } },
+          "radio": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["TUNER", "DAB", "CD", "AUX", "USB", "BLUETOOTH"]
+            }
+          },
+          "trimLine": { "type": "string", "example": "2.0 FSI Ambition" },
+          "modelRange": { "type": "string", "example": "A3 Sportback (8PA)(09.2004->)" },
+          "powerAssistedSteering": { "type": "boolean" },
+          "sportSeats": { "type": "boolean" },
+          "armRest": { "type": "boolean" },
+          "leatherSteeringWheel": { "type": "boolean" },
+          "lumbarSupport": { "type": "boolean" },
+          "heating": { "type": "array", "items": { "type": "string" } },
+          "driveType": { "type": "string", "enum": ["FRONT", "REAR", "ALL"] },
+          "description": { "type": "string" },
+          "images": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Image" }
+          },
+          "kba": { "$ref": "#/components/schemas/Kba" },
+          "deliveryDate": { "type": "string", "format": "date-time", "example": "2025-05-10T00:00:00+02:00" },
+          "price": { "$ref": "#/components/schemas/Price" },
+          "renewalDate": { "type": "string", "format": "date-time", "example": "2025-08-01T10:13:00+02:00" },
+          "uploadSticky": { "type": "boolean" },
+          "bookedAdFeatures": { "type": "array", "items": { "type": "string" } },
+          "bookableFeatures": { "$ref": "#/components/schemas/BookableFeatures" },
+          "multiLocations": { "type": "array", "items": { "type": "string" } },
+          "bidirectionalChargingTypes": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "ref": { "type": "string", "format": "uri" },
+          "hash": { "type": "string" }
+        },
+        "required": ["ref"]
+      },
+      "Kba": {
+        "type": "object",
+        "properties": {
+          "hsn": { "type": "string", "example": "0588" },
+          "tsn": { "type": "string", "example": "ADX" }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "properties": {
+          "consumerPriceGross": { "type": "string", "example": "1890.00" },
+          "type": { "type": "string", "enum": ["FIXED", "NEGOTIABLE", "AUCTION"] },
+          "currency": { "type": "string", "enum": ["EUR", "USD", "GBP", "CHF", "OTHER"], "example": "EUR" }
+        },
+        "required": ["consumerPriceGross", "currency"]
+      },
+      "BookableFeatures": {
+        "type": "object",
+        "properties": {
+          "pageOneAd": { "$ref": "#/components/schemas/FeatureFlag" },
+          "eyeCatcher": { "$ref": "#/components/schemas/FeatureFlag" },
+          "topOfPage": { "$ref": "#/components/schemas/FeatureFlag" },
+          "redPencil": { "$ref": "#/components/schemas/FeatureFlag" },
+          "kleinanzeigenExport": { "$ref": "#/components/schemas/FeatureFlag" },
+          "adTurbo": { "$ref": "#/components/schemas/FeatureFlag" }
+        },
+        "additionalProperties": { "$ref": "#/components/schemas/FeatureFlag" }
+      },
+      "FeatureFlag": {
+        "type": "object",
+        "properties": {
+          "active": { "type": "boolean" }
+        },
+        "required": ["active"]
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 200 },
+          "message": { "type": "string", "example": "Service is healthy" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "uptime": { "type": "number", "format": "float", "example": 52663.00545021 }
+            },
+            "required": ["uptime"]
+          }
+        },
+        "required": ["status", "message", "data"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 404 },
+          "message": { "type": "string", "example": "Anzeige nicht gefunden" }
+        },
+        "required": ["status", "message"]
+      }
+    }
+  }
+}

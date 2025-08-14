@@ -4,6 +4,17 @@ import morgan from "morgan";
 import cors from "cors";
 import compression from "compression";
 import { randomUUID } from "node:crypto";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf8')
+);
 
 // router
 import { routerHealth } from "./router/health.router.js";
@@ -51,6 +62,7 @@ app.use((req, res, next) => {
 // routes
 app.use("/health", routerHealth);
 app.use("/api/ads", routerAds);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // error handling
 app.use((req, res) => {

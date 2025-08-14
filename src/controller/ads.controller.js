@@ -34,7 +34,7 @@ async function controllerGetAd(req, res) {
   if (!response.status === 200) {
     return res.status(response.status).json(buildResponse(response.status, response.statusText))
   }
-  return res.status(200).json(buildResponse(res.status, "All available ads", {...json}))
+  return res.status(200).json(buildResponse(res.status, "Ad found", {...json}))
 
 }
 
