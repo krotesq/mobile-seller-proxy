@@ -1,7 +1,7 @@
 services:
   mobile-seller-proxy:
     build: .
-    container_name: mobile-de-proxy
+    container_name: mobile-seller-proxy
     expose:
       - "3000"
     restart: unless-stopped
